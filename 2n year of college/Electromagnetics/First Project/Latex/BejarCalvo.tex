@@ -1,0 +1,267 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[catalan]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+%\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{comment}
+\usepackage{graphicx}
+\usepackage{color}
+%\usepackage{svg}
+
+% Marges més nets
+%\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\usepackage[a4paper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Guillem Béjar Riera (1710161)}
+\chead{Electromagnetisme}
+\rhead{Miquel Calvo Simó (1710975)}
+\cfoot{\thepage}
+
+\begin{document}
+	
+	\section*{Entrega 2025}
+	
+	\subsection*{Interpretació física del problema}
+	
+	Considerem una esfera conductora de radi $R$ mantinguda a un potencial constant $\phi_0$, situada a una distància $L$ d’un pla infinit conductor connectat a terra. En règim electrostàtic, el camp elèctric a l’interior dels conductors és nul i, per tant, el potencial és constant. Tota la càrrega es distribueix a les superfícies de manera que aquestes condicions es compleixin.
+	\\
+	L’objectiu del problema és determinar el potencial electrostàtic a tot l’espai i la càrrega total induïda sobre l’esfera com a conseqüència de la presència del pla conductor.
+	
+	\subsection*{Justificació del mètode de les càrregues imatge}
+	
+	El mètode de les càrregues imatge es basa en el teorema d’unicitat de l’electrostàtica, que garanteix que una solució de l’equació de Laplace (o Poisson) que compleixi les condicions de contorn és única. Així, si construïm una distribució fictícia de càrregues que reprodueixi exactament el potencial imposat a les superfícies conductores, el potencial generat per aquesta distribució coincideix amb el potencial físic real del sistema.
+	\\
+	Tot i que les càrregues imatge no representen càrregues reals, el camp i el potencial que generen a la \textbf{regió d’interès} són físicament correctes.
+	\\
+	Per tant utilitzarem aquest mètode en la següent secció per representar la distribució de càrregues i el potencial que crea la esfera conductora, a la vegada, que el plà influeix sobre aquest potencial de forma que també hi generarem les càrregues imatge, al pla.
+	\\
+	
+	
+	\subsection*{Raonament del problema}
+	\noindent
+	Situem l'esfera de radi $R$ centrada a l'origen $(0,0,0)$ a potencial $\phi_0$, i el pla conductor a terra ($\phi=0$) a la posició $z=L$.
+	
+	\noindent
+	Per satisfer les condicions simultàniament a les dues superfícies, construirem una sèrie infinita de càrregues imatge. Anomenarem $q_n$ a les càrregues situades dins l'esfera (posició $z_n$) i $q'_n$ a les seves imatges mirall respecte al pla (posició $z'_n$).
+	
+	\noindent
+	Per fixar el potencial $\phi_0$ a l'esfera (ignorant momentàniament el pla), col·loquem una càrrega al centre:
+	$$ q_0 = 4\pi\epsilon_0 R \phi_0 \quad , \quad z_0 = 0 $$
+	Aquesta càrrega, però, viola la condició $\phi=0$ al pla $z=L$. Per corregir-ho, afegim la seva imatge al costat oposat del pla ($z > L$):
+	$$ q'_0 = -q_0 \quad \quad z'_0 = 2L $$
+	
+	\noindent
+	La presència de $q'_0$ altera el potencial de l'esfera. Per restablir $\phi=\phi_0$ a la superfície esfèrica, hem d'afegir una nova càrrega imatge $q_1$ a l'interior, tal que sigui la imatge de $q'_0$ respecte a l'esfera.
+	$$ z_1 = \frac{R^2}{z'_0} = \frac{R^2}{2L} $$
+	$$ q_1 = -\frac{R}{z'_0} q'_0 = -\frac{R}{2L}(-q_0) = \frac{R}{2L} q_0 $$
+	Ara el potencial a l'esfera és correcte, però $q_1$ torna a violar la condició del pla. Afegim la seva imatge al pla:
+	$$ q'_1 = -q_1 \quad  \quad z'_1 = 2L - z_1 $$
+	
+	\noindent
+	La càrrega $q'_1$ requereix una nova imatge $q_2$ dins l'esfera:
+	$$ z_2 = \frac{R^2}{z'_1} = \frac{R^2}{2L - z_1} $$
+	$$ q_2 = -\frac{R}{z'_1} q'_1 = \frac{R}{z'_1} q_1 = \frac{z_2}{R} q_1 $$
+	
+	\noindent
+	Si observem el procés anterior, trobem les següents relacions de recurrència:
+	\begin{equation}
+		z_{n+1} = \frac{R^2}{2L - z_n} \label{eq:rec_z}
+	\end{equation}
+	\begin{equation}
+		q_{n+1} = \frac{z_{n+1}}{R} q_n \label{eq:rec_q}
+	\end{equation}
+	\\
+	per a $n \in \mathbb{Z}_{\ge 0}$.
+	
+	
+	\noindent
+	L'equació (\ref{eq:rec_z}) és una recurrència no lineal. Per resoldre-la, apliquem un canvi de variable que permeti linealitzar el sistema. Proposem que $z_n$ és el quocient de dos termes d'una successió auxiliar $u_n$:
+	\begin{equation}
+		z_n = R \frac{u_n}{u_{n+1}}
+	\end{equation}
+	Substituint el canvi a l'equació (\ref{eq:rec_z}) obtenim:
+	$$ R \frac{u_{n+1}}{u_{n+2}} = \frac{R^2}{2L - R \frac{u_n}{u_{n+1}}} $$
+	Simplifiquem dividint tota l'equació per $R$:
+	$$ \frac{u_{n+1}}{u_{n+2}} = \frac{R}{2L - R \frac{u_n}{u_{n+1}}} = \frac{R u_{n+1}}{2L u_{n+1} - R u_n} $$
+	Ara, invertim ambdues fraccions per eliminar els denominadors:
+	$$ \frac{u_{n+2}}{u_{n+1}} = \frac{2L u_{n+1} - R u_n}{R u_{n+1}} $$
+	Multiplicant per $u_{n+1}$ i separant els termes del numerador:
+	$$ u_{n+2} = \frac{2L}{R} u_{n+1} - u_n \implies u_{n+2} - \frac{2L}{R} u_{n+1} + u_n = 0 $$
+	Hem transformat una recurrència no lineal en una equació lineal de segon ordre amb coeficients constants. Per resoldre-la, proposem $u_n = r^n$, fet que ens porta a l'equació característica:
+	$$ r^2 - \frac{2L}{R} r + 1 = 0 $$
+	Com que $L > R$, el terme $L/R > 1$, i podem definir un paràmetre $\xi$ tal que $\cosh(\xi) = L/R$. 
+	El paràmetre $\xi$, definit mitjançant $\cosh(\xi) = L/R$, mesura la separació relativa entre l’esfera i el pla. Quan $L \gg R$, el valor de $\xi$ és gran i la influència del pla conductor és petita, recuperant-se el comportament d’una esfera gairebé aïllada. En canvi, quan el pla s’acosta a l’esfera, la polarització induïda esdevé més significativa.
+	\\\\
+	Aleshores, l'equació queda $r^2 - 2\cosh(\xi)r + 1 = 0$, les arrels de la qual són:
+	$$ r = \cosh(\xi) \pm \sqrt{\cosh^2(\xi) - 1} = \cosh(\xi) \pm \sinh(\xi) = e^{\pm \xi} $$
+	La solució general és $u_n = A e^{n\xi} + B e^{-n\xi}$. Com que $z_0 = 0$, i segons el nostre canvi $z_0 = R (u_0/u_1)$, deduïm que $u_0 = 0$. Això implica:
+	$$ u_0 = A + B = 0 \implies B = -A $$
+	Així, $u_n = A(e^{n\xi} - e^{-n\xi}) = 2A \sinh(n\xi)$. En substituir $u_n$ a la definició de $z_n$, la constant $2A$ es cancel·la:
+	\begin{equation}
+		z_n = R \frac{\sinh(n\xi)}{\sinh((n+1)\xi)} \label{eq:zn}
+	\end{equation}
+	
+	\noindent
+	Per validar que aquesta és la solució correcta, substituïm l'expressió (\ref{eq:zn}) dins del costat dret de la recurrència original (\ref{eq:rec_z}) i hem de recuperar $z_{n+1}$:
+	
+	$$ \frac{R^2}{2L - z_n} = \frac{R^2}{2R\cosh(\xi) - R \frac{\sinh(n\xi)}{\sinh((n+1)\xi)}} $$
+	$$ = R \frac{1}{2\cosh(\xi) - \frac{\sinh(n\xi)}{\sinh((n+1)\xi)}} = R \frac{\sinh((n+1)\xi)}{2\cosh(\xi)\sinh((n+1)\xi) - \sinh(n\xi)} $$
+	Utilitzant la identitat hiperbòlica $2\cosh(A)\sinh(B) = \sinh(A+B) + \sinh(B-A)$:
+	$$ 2\cosh(\xi)\sinh((n+1)\xi) = \sinh(\xi + (n+1)\xi) + \sinh((n+1)\xi - \xi) = \sinh((n+2)\xi) + \sinh(n\xi) $$
+	Si substituïm això al denominador:
+	$$ R \frac{\sinh((n+1)\xi)}{ (\sinh((n+2)\xi) + \sinh(n\xi)) - \sinh(n\xi) } = R \frac{\sinh((n+1)\xi)}{\sinh((n+2)\xi)} $$
+	Que és exactament l'expressió proposada per a $n+1$.
+	\\\\
+	\noindent
+	Un cop tenim $z_n$, determinem el valor de $q_n$. Segons la recurrència (\ref{eq:rec_q}), cada càrrega es calcula a partir de l'anterior com $q_i = (z_i/R) q_{i-1}$. Si apliquem aquesta relació successivament des de la càrrega inicial $q_0$:
+	\begin{itemize}
+		\item $q_1 = \frac{z_1}{R} q_0$
+		\item $q_2 = \frac{z_2}{R} q_1= \left( \frac{z_1}{R} q_0 \right) \frac{z_2}{R} = \frac{z_1}{R} \frac{z_2}{R} q_0$
+		\item $q_3 = \frac{z_3}{R} q_2 = \left( \frac{z_1}{R} \frac{z_2}{R} q_0 \right) \frac{z_3}{R} = \frac{z_1}{R} \frac{z_2}{R} \frac{z_3}{R} q_0 $
+	\end{itemize}
+	Generalitzant per a qualsevol $n$:
+	\begin{equation}
+		q_n = q_0 \prod_{i=1}^n \frac{z_i}{R}
+	\end{equation}
+	per a n $\in \mathbb{Z}_{\ge 0}$.
+	\\
+	Substituint l'expressió de $z_i$:
+	$$ q_n = q_0 \left( \frac{\sinh(\xi)}{\sinh(2\xi)} \cdot \frac{\sinh(2\xi)}{\sinh(3\xi)} \cdot \dots \cdot \frac{\sinh(n\xi)}{\sinh((n+1)\xi)} \right) $$
+	
+	\noindent
+	Això provoca una cancel·lació telescòpica en el producte, resultant en:
+	\begin{equation}
+		q_n = q_0 \frac{\sinh(\xi)}{\sinh((n+1)\xi)}
+	\end{equation}
+	
+	\noindent
+	\textbf{Càrrega del conductor esfèric} \\
+	La càrrega total $Q$ induïda sobre l'esfera és la suma de totes les càrregues imatge $q_n$ que hem situat en el seu interior per mantenir el potencial $\phi_0$:
+	$$ Q = \sum_{n=0}^{\infty} q_n = 4\pi\epsilon_0 R \phi_0 \sinh(\xi) \sum_{n=0}^{\infty} \frac{1}{\sinh((n+1)\xi)} $$
+	On $\xi = \cosh^{-1}\left( \frac{L}{R}\right)$ i per a n $\in \mathbb{Z}_{\ge 0}$.
+	\\
+	Cap destacar que, aquesta càrrega no coincideix necessàriament amb la que tindria l’esfera en absència del pla, ja que el conductor a terra modifica la distribució de càrrega mitjançant efectes d’inducció.
+	\\\\
+	\noindent
+	\textbf{Potencial electrostàtic a tot l'espai}
+	\\
+	Com que el pla conductor està a $\phi=0$, el camp elèctric només existeix a la regió $z < L$. En aquesta regió, el potencial s'expressa com la superposició de les càrregues puntuals dins l'esfera i les seves imatges respecte al pla ($q'_n = -q_n$ a $z'_n = 2L - z_n$):
+	$$ \phi(x, y, z) = \frac{1}{4\pi\epsilon_0} \sum_{n=0}^{\infty} q_n \left( \frac{1}{\sqrt{x^2 + y^2 + (z-z_n)^2}} - \frac{1}{\sqrt{x^2 + y^2 + (z-(2L-z_n))^2}} \right) $$
+	per a n $\in \mathbb{Z}_{\ge 0}$.
+	\\
+	A la regió $z \geq L$, el potencial és nul ($\phi = 0$), tal com imposa la presència del pla conductor connectat a terra.
+	\\
+	Aquest resultat és coherent amb el fet que el camp elèctric no pot existir a l’interior ni més enllà d’un conductor ideal connectat a terra.
+
+
+
+\newpage
+\subsection*{Simulacions (Apartat extra per demostrar la comprensió del problema)}
+\noindent
+A continuació veurem representacions visuals del problema fetes mitjançant simulacions de \textit{Python} per extreure resultats interessants per al problema.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\linewidth]{images/Figure_3.png}
+	\caption{Simulació del camp elèctric, representat en les fletxes blaves}
+	\label{fig:campelect}
+\end{figure}
+
+\noindent
+\textbf{Interpretació qualitativa del camp electrostàtic}
+\\
+A la Figura~\ref{fig:campelect} es mostra una representació qualitativa de les línies de camp electrostàtic corresponents al sistema format per l’esfera conductora i el pla conductor connectat a terra.
+\\
+Les línies de camp surten perpendicularment de la superfície de l’esfera, tal com correspon a un conductor en equilibri electrostàtic, i acaben perpendicularment al pla conductor. Això reflecteix el fet que el camp elèctric no pot tenir component tangencial sobre una superfície conductora.
+\\\\
+S’observa que en les línies de camp la presència del pla trenca la simetria esfèrica del camp, que deixa de ser radial i es distorsiona cap al pla conductor.
+\\
+A la regió situada per sobre del pla conductor ($z \geq L$), el camp electrostàtic és nul, ja que el pla es troba connectat a terra i el potencial és constantment zero en aquesta zona. El comportament qualitatiu del camp és coherent amb la solució obtinguda mitjançant el mètode de les càrregues imatge i amb les condicions de contorn imposades pel problema.
+
+\newpage
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\linewidth]{images/newplot (1)_retallada.png}
+	\caption{Simulació del potencial escalar, representat en \textit{isoplans} amb el mateix valor de $\phi$}
+	\label{fig:potelect}
+\end{figure}
+
+\noindent
+\textbf{Interpretació qualitativa del potencial electrostàtic}
+\\
+A la Figura~\ref{fig:potelect} es mostra una representació qualitativa del potencial escalar format pel sistema pla-esfera. On el pla i esfera vermells representen el pla infinit i l'esfera conductors del problema. Els diferents plans de color verdós simbolitzen els isoplans respecte al potencial escalar, es ha dir, cada punt d'un mateix pla te la mateixa magnitud escalar. I segons el color del pla, la magnitud serà més alta o més baixa segons les magnituds dels altres plans, ja que el potencial ha estat normalitzat per a una comprensió més fàcil.
+\\\\
+S’observa que quan més a prop estigui un isopla del pla infinit conductor, més s'aplana. És a dir, el potencial escalar tendeix a un constant en el pla infinit (el vermell). També destaca que el potencial va disminuint a mesura que s'allunya de l'esfera conductora, però mai arriba a valors negatius.
+\\
+Aquests dues observacions corroboren la interpretació inicial del pla infinit, que es que el seu potencial es nul. Doncs veiem que el potencial de l'esfera tendeix a una constant en el pla i que a mesura que s'allunya disminueix, per tant concorda amb que el potencial en el pla i més enllà del pla  $z \geq L$ és nul ($\phi = 0$).
+
+
+
+
+
+
+
+
+\newpage
+\subsection*{Annex}
+El codi de les simulacions el podeu trobar en el següent \href{https://github.com/Calvomike/University-Projects/tree/4c719087ff9220dbe9c5b304c06be1c423b13916/2n%20year%20of%20college/Electromagnetics/First%20Project}{GitHub}.
+\\\\
+\textit{DISCLAIMER}: Per a la realització de la simulació s'han considerat constants arbitràries per a les variables indefinides que proposava el problema. (Exemples: R, L, $\phi_0$)
+
+
+\begin{comment}
+	EXPLICACIONS:
+\end{comment}
+
+\newpage
+
+\begin{comment}
+	\subsection*{Esfera conductora a potencial constant}
+
+En absència del pla conductor, una esfera conductora de radi $R$ mantinguda a potencial $\phi_0$ es pot descriure mitjançant una única càrrega puntual situada al seu centre. Aquesta descripció és conseqüència de la simetria esfèrica del problema: el potencial exterior només depèn de la distància al centre de l’esfera.
+
+La càrrega equivalent és
+\[
+q_0 = 4\pi\varepsilon_0 R \phi_0,
+\]
+la qual garanteix que tota la superfície de l’esfera es mantingui a potencial constant.
+
+\subsection*{Influència del pla conductor connectat a terra}
+
+La presència del pla conductor a $\phi = 0$ trenca la simetria del problema. El potencial creat per la càrrega central de l’esfera no s’anul·la sobre el pla, de manera que cal introduir una correcció.
+
+Per imposar la condició $\phi = 0$ sobre un pla conductor infinit, s’introdueix una càrrega imatge de signe oposat, simètrica respecte al pla. Aquesta càrrega imatge representa, de manera efectiva, la redistribució de càrrega induïda al pla conductor.
+
+\subsection*{Conflicte entre les condicions de contorn}
+
+La introducció de la càrrega imatge respecte al pla permet satisfer la condició $\phi = 0$ en aquest, però al mateix temps altera el potencial a la superfície de l’esfera, que deixa de ser constant. De manera recíproca, cada vegada que es corregeix el potencial a una de les superfícies conductores, es viola la condició a l’altra.
+
+Aquest conflicte obliga a introduir successivament noves càrregues imatge, tant respecte a l’esfera com respecte al pla.
+
+\subsection*{Sèrie infinita de càrregues imatge}
+
+El procés iteratiu de correcció dona lloc a una sèrie infinita de càrregues imatge dins de l’esfera i les seves corresponents imatges respecte al pla. Cada nova càrrega té un mòdul menor que l’anterior i es troba més a prop del centre de l’esfera.
+
+Físicament, aquesta sèrie infinita reflecteix una redistribució de càrrega cada cop més fina necessària per satisfer simultàniament les dues condicions de contorn. La convergència de la sèrie garanteix que el sistema assoleix un estat d’equilibri electrostàtic estable.
+\end{comment}
+
+\begin{comment}
+	\subsection*{Significat físic de les relacions de recurrència}
+
+Les relacions de recurrència per a les posicions i les càrregues tenen una interpretació clara. Les expressions per a $z_n$ provenen de les propietats geomètriques de la inversió respecte a una esfera conductora, mentre que la relació entre les càrregues indica que cada correcció successiva té una influència cada vegada menor.
+
+Això reflecteix el fet que la influència electrostàtica del pla sobre l’esfera es va esmorteint progressivament.
+
+\end{comment}
+
+
+
+
+
+\end{document}
